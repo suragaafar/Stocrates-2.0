@@ -35,12 +35,14 @@ export function EventInput({ onAnalyze, isLoading }: EventInputProps) {
   ]
 
   const handleAnalyze = () => {
+    // Pass empty strings as undefined to avoid sending empty query params
     const pattern = selectedPattern || undefined
     const eventType = selectedEventType || undefined
     onAnalyze(pattern, eventType)
   }
 
   const handleShowAll = () => {
+    // Clear selections and show all events
     setSelectedPattern('')
     setSelectedEventType('')
     onAnalyze(undefined, undefined)
@@ -95,14 +97,62 @@ export function EventInput({ onAnalyze, isLoading }: EventInputProps) {
           </div>
         </div>
 
+        {/* Clear filters button */}
+        {(selectedPattern || selectedEventType) && (
+          <Button
+            onClick={() => {
+              setSelectedPattern('')
+              setSelectedEventType('')
+            }}
+            variant="outline"
+            size="sm"
+            className="w-full"
+          >
+            Clear Filters
+          </Button>
+        )}
+
+        <div className="p-4 bg-blue-50 dark:bg-blue-950 rounded-lg border border-blue-200 dark:border-blue-800">
+          <p className="text-sm text-blue-900 dark:text-blue-100">
+            <strong>💡 Learning Note:</strong> Filter by technical patterns (breakout, head & shoulders)
+            and/or event categories (earnings, mergers, FDA approvals). Leave blank to see all events.
+          </p>
+        </div>
+
         <div className="grid grid-cols-2 gap-3">
-          <Button onClick={handleAnalyze} disabled={isLoading} className="w-full" size="lg">
-            {isLoading ? <>⏳ Analyzing...</> : <>🔍 Analyze</>}
+          <Button
+            onClick={handleAnalyze}
+            disabled={isLoading}
+            className="w-full"
+            size="lg"
+          >
+            {isLoading ? (
+              <>
+                <span className="mr-2">⏳</span>
+                Analyzing...
+              </>
+            ) : (
+              <>
+                <span className="mr-2">🔍</span>
+                Analyze
+              </>
+            )}
           </Button>
 
-          <Button onClick={handleShowAll} disabled={isLoading} variant="outline" className="w-full" size="lg">
-            📊 Show All
+          <Button
+            onClick={handleShowAll}
+            disabled={isLoading}
+            variant="outline"
+            className="w-full"
+            size="lg"
+          >
+            <span className="mr-2">📊</span>
+            Show All
           </Button>
+        </div>
+
+        <div className="text-xs text-muted-foreground text-center">
+          ⚠️ Educational purposes only • Not financial advice
         </div>
       </CardContent>
     </Card>
