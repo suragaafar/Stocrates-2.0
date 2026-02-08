@@ -1,11 +1,11 @@
-# 🎨 Stocrates Design System
+# Stocrates Design System
 
 ## Overview
 Stocrates features a clean, playful, game-inspired UI with a retro-modern aesthetic. The design is friendly, interactive, and easy on the eyes.
 
 ---
 
-## 🎨 Color Palette
+## Color Palette
 
 ### Primary Colors
 ```css
@@ -30,7 +30,7 @@ Stocrates features a clean, playful, game-inspired UI with a retro-modern aesthe
 
 ---
 
-## 📝 Typography
+## Typography
 
 ### Font Families
 
@@ -71,7 +71,7 @@ small: 0.875rem (14px) - Roboto Regular
 
 ---
 
-## 🎮 Components
+## Game Components
 
 ### Buttons
 
@@ -137,7 +137,7 @@ small: 0.875rem (14px) - Roboto Regular
 
 ---
 
-## 🎯 Design Patterns
+## Design Patterns
 
 ### Decorative Borders
 All major content areas use decorative borders with corner circles:
@@ -158,7 +158,7 @@ All clickable elements should have:
 
 ---
 
-## 🎨 Tailwind Classes
+## Tailwind Classes
 
 ### Quick Reference
 ```tsx
@@ -185,7 +185,7 @@ border-3    // 3px border width
 
 ---
 
-## 📐 Layout Guidelines
+## Layout Guidelines
 
 ### Background Colors
 - **Main app background**: `#fffcf0` (cream)
@@ -199,7 +199,7 @@ border-3    // 3px border width
 
 ---
 
-## 🎮 Game Mode Styling
+## Game Mode Styling
 
 For game-related features:
 - Use **Courier New** font for scores, buttons, labels
@@ -210,5 +210,5 @@ For game-related features:
 
 ---
 
-Made with 🎨 for a delightful user experience
+Made by Team Code of Duty
 

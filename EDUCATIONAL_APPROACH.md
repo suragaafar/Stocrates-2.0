@@ -9,23 +9,23 @@ Stocrates is an educational financial literacy platform that teaches beginners h
 
 ## Core Principles
 
-### 1. 📚 Educational First
+### 1. Educational First
 - **Goal**: Teach concepts, not provide trading advice
 - **Approach**: Every interaction is a learning opportunity
 - **Outcome**: Users develop their own analytical skills
 
-### 2. 🔍 Historical Pattern Analysis
+### 2. Historical Pattern Analysis
 - **What**: Analyze similar past events to show how markets reacted
 - **How**: Transparent similarity scoring (same symbol, event type, sector, text)
 - **Why**: Learn from history without making predictions
 
-### 3. 🎯 Transparency & Explainability
+### 3. Transparency & Explainability
 - Show source credibility weights to users
 - Explain complete methodology
 - Display all historical data points (no cherry-picking)
 - Be clear about limitations and uncertainty
 
-### 4. 🚫 No Predictions or Recommendations
+### 4. No Predictions or Recommendations
 - **Never**: Make buy/sell recommendations
 - **Never**: Predict future prices
 - **Always**: Show historical patterns and multiple outcomes
@@ -126,13 +126,13 @@ Always use educational framing:
 Every response should naturally include appropriate disclaimers:
 
 **Standard**: 
-> 📚 Educational purposes only. Not financial advice.
+> Educational purposes only. Not financial advice.
 
 **Detailed**:
-> ⚠️ Educational Disclaimer: This information is for learning purposes only and is not financial advice. Past performance does not guarantee future results. Always conduct your own research before making financial decisions.
+> Educational Disclaimer: This information is for learning purposes only and is not financial advice. Past performance does not guarantee future results. Always conduct your own research before making financial decisions.
 
 **Historical Patterns**:
-> 🔍 About Historical Patterns: Historical patterns help us learn how markets have reacted in the past, but they don't predict the future. Every situation is unique, and many factors influence market movements.
+> About Historical Patterns: Historical patterns help us learn how markets have reacted in the past, but they don't predict the future. Every situation is unique, and many factors influence market movements.
 
 ---
 

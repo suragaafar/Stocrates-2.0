@@ -1,4 +1,4 @@
-# 📊 Stocrates 2.0
+# Stocrates 2.0
 
 > **Learn Markets Through Historical Patterns**
 
@@ -10,42 +10,82 @@ An educational AI-powered financial literacy platform that teaches beginners how
 
 ---
 
-## ✨ Features
+## Documentation
 
-### 💬 AI Chat Interface
-- **Conversational AI** powered by Groq (llama-3.1-70b)
+- **[Socratic Method Guide](./SOCRATIC_METHOD.md)** - Learn how Stocrates uses the Socratic method for financial education
+- **[Educational Approach](./EDUCATIONAL_APPROACH.md)** - Our philosophy on teaching financial literacy
+- **[Design System](./DESIGN_SYSTEM.md)** - UI/UX guidelines and component documentation
+- **[API Fallback System](./API_FALLBACK_SYSTEM.md)** - How we ensure uninterrupted service
+
+---
+
+## Features
+
+### AI Chat Interface with Socratic Method
+- **Conversational AI** powered by Groq (llama-3.3-70b-versatile)
+- **Socratic questioning** to guide learning and critical thinking
 - Ask questions about stocks, markets, and financial concepts
-- Get educational responses with historical context
+- Get educational responses with historical context and pattern matching
+- **Source credibility weighting** (credible sources 60-80%, social 10-30%)
 
-### 📈 Live Stock Data
-- **Real-time stock prices** and charts
-- **Interactive visualizations** with historical data
+### Visual Confidence Indicators
+- **Color-coded progress bars** showing confidence levels
+  - 🟢 Green (≥70%) - High confidence
+  - 🟡 Yellow (≥50%) - Medium confidence
+  - 🔴 Red (<50%) - Low confidence
+- **Dual confidence metrics**:
+  - Credible sources (Bloomberg, Reuters, WSJ, Yahoo Finance)
+  - Social sentiment (social media platforms)
+- **Automatic parsing** from AI responses with visual rendering
+
+### Interactive Terminology Legend
+- **Collapsible sidebar** with 15+ financial term definitions
+- **Hover tooltips** for instant learning
+- Terms include: Pattern Reliability, Volatility, Confidence Level, Market Cap, and more
+- **Always accessible** during chat sessions
+- **Educational focus** - learn terminology as you explore
+
+### Live Stock Data & TradingView Integration
+- **Real-time stock prices** and interactive charts
+- **TradingView widgets** for professional-grade visualizations
 - **Company financials** and key metrics
 - **Stock screeners** for discovery
+- **Market overview** and heatmaps
+- **ETF analysis** and trending stocks
 
-### 📰 Multi-Source News Integration
+### Multi-Source News Integration
 - **NewsAPI** - 100+ news sources (Bloomberg, Reuters, WSJ, etc.)
 - **Finnhub** - Financial news and earnings reports
 - **Reddit Sentiment** - r/wallstreetbets and r/investing analysis
 - **Automatic fallback** system for uninterrupted service
-- **2-month date filtering** to ensure recent, relevant news
+- **30-day news filtering** to ensure recent, relevant context
+- **Source credibility scoring** with transparent weighting
 
-### 🎮 Educational Game Mode
-- **Paper trading** with virtual "Stocrates Points"
+### Educational Game Mode
+- **Paper trading** with virtual "Stocrates Points" (10,000 max)
 - **Historical time travel** - Learn from past market events
 - **Portfolio tracking** and performance analysis
 - **Risk-free learning** environment
+- **Investment feedback** with educational insights
 
-### 🔍 Reddit Sentiment Analysis
+### Reddit Sentiment Analysis
 - **Automated scraping** from multiple subreddits
 - **AI-powered analysis** using GPT-4 via Groq
 - **Batch processing** for large datasets
 - **Stock mention tracking** and sentiment scoring
 - **Trend detection** and theme analysis
+- **Fear & Greed Index** calculation
+
+### Event Impact Analyzer
+- **Historical pattern matching** for market events
+- **CSV export** for analysis data
+- **Pattern confidence meter** visualization
+- **Source credibility breakdown**
+- **Learning objectives** for each analysis
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -112,7 +152,7 @@ An educational AI-powered financial literacy platform that teaches beginners how
 
 ---
 
-## 📖 Usage Guide
+## Usage Guide
 
 ### Basic Chat Interaction
 
@@ -147,7 +187,7 @@ The analysis results are saved to `data/reddit-analysis.json` and automatically 
 
 ---
 
-## ⚙️ Available Scripts
+## Available Scripts
 
 ### Development
 - `pnpm dev` - Start development server with Turbopack
@@ -170,23 +210,48 @@ The analysis results are saved to `data/reddit-analysis.json` and automatically 
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 stocrates-nextjs/
 ├── app/                      # Next.js app directory
 │   ├── (chat)/              # Chat interface pages
+│   │   └── layout.tsx       # Chat layout with terminology legend
+│   ├── (game)/              # Game mode pages
+│   ├── event/               # Event analysis pages
 │   ├── actions.ts           # Server actions
 │   └── layout.tsx           # Root layout
 ├── components/              # React components
 │   ├── stocks/             # Stock-related components
-│   ├── ui/                 # UI components (shadcn/ui)
+│   ├── tradingview/        # TradingView widget components
+│   │   ├── stock-chart.tsx
+│   │   ├── stock-screener.tsx
+│   │   ├── market-overview.tsx
+│   │   ├── market-heatmap.tsx
+│   │   └── etf-heatmap.tsx
+│   ├── event/              # Event analysis components
+│   │   ├── event-analysis-page.tsx
+│   │   └── impact-panel.tsx
+│   ├── game/               # Game mode components
+│   │   └── time-machine.tsx
+│   ├── ui/                 # UI components (shadcn/ui + custom)
+│   │   ├── confidence-display.tsx    # Visual confidence progress bars
+│   │   ├── confidence-meter.tsx      # Pattern confidence gauge
+│   │   ├── financial-term.tsx        # Financial term tooltips
+│   │   ├── terminology-legend.tsx    # Collapsible sidebar with terms
+│   │   └── ...                       # Other shadcn/ui components
+│   ├── header.tsx          # Main navigation header
+│   ├── empty-screen.tsx    # Chat welcome screen
 │   └── chat.tsx            # Main chat component
 ├── lib/                     # Core library code
 │   ├── chat/               # Chat AI logic
+│   │   └── actions.tsx     # AI tool definitions & confidence parsing
 │   ├── game/               # Game mode logic
 │   ├── news/               # News fetching & Reddit scraping
-│   └── reddit/             # Reddit analysis tools
+│   ├── reddit/             # Reddit analysis tools
+│   ├── utils/              # Utility functions
+│   │   └── csv-export.ts   # CSV export for event analysis
+│   └── educational-guidelines.ts  # Socratic method prompts
 ├── scripts/                 # Utility scripts
 │   ├── scrape-reddit-multi.ts
 │   ├── analyze-reddit-batches.ts
@@ -194,12 +259,17 @@ stocrates-nextjs/
 ├── data/                    # Data storage
 │   ├── reddit-raw.json     # Scraped Reddit data
 │   └── reddit-analysis.json # AI analysis results
+├── docs/                    # Documentation
+│   ├── SOCRATIC_METHOD.md  # Socratic teaching approach
+│   ├── EDUCATIONAL_APPROACH.md  # Educational philosophy
+│   ├── DESIGN_SYSTEM.md    # UI/UX guidelines
+│   └── API_FALLBACK_SYSTEM.md  # API reliability system
 └── public/                  # Static assets
 ```
 
 ---
 
-## 🎯 Core Principles
+## Core Principles
 
 ### Educational First
 - **Goal**: Teach concepts, not provide trading advice
@@ -219,7 +289,7 @@ stocrates-nextjs/
 
 ---
 
-## 🔧 Configuration
+## Configuration
 
 ### News API Fallback System
 
@@ -249,7 +319,7 @@ python scripts/scrape-reddit-with-comments.py
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
@@ -261,13 +331,13 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License.
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - **Groq** - Lightning-fast AI inference
 - **NewsAPI** - Comprehensive news aggregation
@@ -277,7 +347,7 @@ This project is licensed under the MIT License.
 
 ---
 
-## 💬 Support
+## Support
 
 For issues, questions, or suggestions:
 - Open an issue on [GitHub](https://github.com/makhskham/Stocrates-2.0/issues)
@@ -291,4 +361,4 @@ For issues, questions, or suggestions:
 
 ---
 
-Made with ❤️ for financial education
+Made by Team Code of Duty

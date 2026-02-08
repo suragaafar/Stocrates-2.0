@@ -1,6 +1,6 @@
-# 🎓 The Socratic Method in Stocrates
+# The Socratic Method in Stocrates
 
-## 📖 What is "Stocrates"?
+## What is "Stocrates"?
 
 **Stocrates** = **Stock** + **Socrates**
 
@@ -10,7 +10,7 @@ A portmanteau combining:
 
 ---
 
-## 🧠 The Socratic Method Explained
+## The Socratic Method Explained
 
 ### What is the Socratic Method?
 
@@ -31,7 +31,7 @@ The Socratic Method, developed by the philosopher Socrates (470-399 BCE), is a f
 
 ---
 
-## 💡 Why "Stocrates" for Financial Education?
+## Why "Stocrates" for Financial Education?
 
 ### The Problem with Traditional Financial Advice:
 
@@ -48,7 +48,7 @@ The Socratic Method, developed by the philosopher Socrates (470-399 BCE), is a f
 
 ---
 
-## 🎯 How Stocrates Implements the Socratic Method
+## How Stocrates Implements the Socratic Method
 
 ### 1. **Question-Driven Learning**
 
@@ -84,7 +84,7 @@ Stocrates explores:
 
 ---
 
-## 📊 Stocrates vs. Traditional Financial Tools
+## Stocrates vs. Traditional Financial Tools
 
 | Traditional Tools | Stocrates (Socratic Approach) |
 |------------------|-------------------------------|
@@ -97,7 +97,7 @@ Stocrates explores:
 
 ---
 
-## 🔍 The Socratic Dialogue Flow in Stocrates
+## The Socratic Dialogue Flow in Stocrates
 
 ### Example Interaction:
 
@@ -118,7 +118,7 @@ Stocrates explores:
 
 ---
 
-## 🎓 Educational Outcomes
+## Educational Outcomes
 
 ### What Users Learn:
 
@@ -138,7 +138,7 @@ Stocrates explores:
 
 ---
 
-## 📚 Philosophical Foundation
+## Philosophical Foundation
 
 ### Socrates' Core Belief:
 > "I know that I know nothing." - Socrates
@@ -159,7 +159,7 @@ We teach users to:
 
 ---
 
-## 🛠️ Technical Implementation
+## Technical Implementation
 
 ### AI System Prompts (Socratic Framework):
 
@@ -183,7 +183,7 @@ When a user asks about a stock:
 
 ---
 
-## 🎯 Success Metrics
+## Success Metrics
 
 A successful Socratic interaction in Stocrates:
 
@@ -195,7 +195,7 @@ A successful Socratic interaction in Stocrates:
 
 ---
 
-## 💬 Elevator Pitch: Why "Stocrates"?
+## Elevator Pitch: Why "Stocrates"?
 
 **Short Version:**
 > "Stocrates combines 'Stock' and 'Socrates' - we teach financial literacy through the Socratic Method, using AI to guide users through historical market patterns rather than making predictions. Like Socrates questioned Athenians to reveal truth, we question assumptions about investing to reveal understanding."
@@ -205,5 +205,5 @@ A successful Socratic interaction in Stocrates:
 
 ---
 
-Made with 🧠 for critical thinking and 📈 for financial literacy
+Made by Team Code of Duty
 
