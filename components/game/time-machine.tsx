@@ -47,13 +47,13 @@ export function TimeMachine({ selectedDate, onDateChange, className }: TimeMachi
   return (
     <div className={cn('flex flex-col gap-3', className)}>
       <div className="flex items-center justify-between">
-        <h3 className="font-title text-xl font-bold text-white flex items-center gap-2 drop-shadow-lg">
+        <h3 className="font-title text-xl font-bold text-stocrates-dark flex items-center gap-2">
           🕰️ Time Machine
         </h3>
         {!isToday && (
           <button
             onClick={goToToday}
-            className="font-game text-xs px-3 py-1.5 bg-white/20 text-white border-2 border-white/40 rounded-full hover:bg-white/30 transition-all uppercase tracking-wide backdrop-blur-sm"
+            className="font-game text-xs px-3 py-1.5 bg-stocrates-dark text-stocrates-cream border-2 border-stocrates-dark rounded-full hover:bg-stocrates-dark-blue transition-all uppercase tracking-wide"
           >
             Return to Today
           </button>
@@ -129,18 +129,7 @@ export function TimeMachine({ selectedDate, onDateChange, className }: TimeMachi
         )}
       </div>
 
-      <div className="relative border-3 border-stocrates-dark bg-white rounded-lg p-4">
-        {/* Small decorative corners */}
-        <div className="absolute w-2.5 h-2.5 rounded-full border-2 border-stocrates-dark bg-stocrates-blue -top-1 -left-1" />
-        <div className="absolute w-2.5 h-2.5 rounded-full border-2 border-stocrates-dark bg-stocrates-blue -top-1 -right-1" />
-        <div className="absolute w-2.5 h-2.5 rounded-full border-2 border-stocrates-dark bg-stocrates-blue -bottom-1 -left-1" />
-        <div className="absolute w-2.5 h-2.5 rounded-full border-2 border-stocrates-dark bg-stocrates-blue -bottom-1 -right-1" />
-        {/* Small mid-point circles */}
-        <div className="absolute w-2 h-2 rounded-full border border-stocrates-dark bg-stocrates-cream -top-1 left-1/2 -translate-x-1/2" />
-        <div className="absolute w-2 h-2 rounded-full border border-stocrates-dark bg-stocrates-cream -bottom-1 left-1/2 -translate-x-1/2" />
-        <div className="absolute w-2 h-2 rounded-full border border-stocrates-dark bg-stocrates-cream -left-1 top-1/2 -translate-y-1/2" />
-        <div className="absolute w-2 h-2 rounded-full border border-stocrates-dark bg-stocrates-cream -right-1 top-1/2 -translate-y-1/2" />
-
+      <div className="bg-stocrates-blue/30 rounded-lg p-4">
         <p className="font-body text-xs text-stocrates-dark">
           <strong className="font-title">💡 How it works:</strong> Select a date in the past to see historical stock prices
           and events. "Invest" your Stockrates Points and see how your portfolio would have grown to today!

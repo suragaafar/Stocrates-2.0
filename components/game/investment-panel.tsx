@@ -92,18 +92,7 @@ export function InvestmentPanel() {
 
   return (
     <div className="space-y-4">
-      <div className="relative bg-white border-3 border-stocrates-dark rounded-lg p-5 shadow-lg">
-        {/* Decorative corners */}
-        <div className="absolute w-3 h-3 rounded-full border-2 border-stocrates-dark bg-stocrates-blue -top-1.5 -left-1.5" />
-        <div className="absolute w-3 h-3 rounded-full border-2 border-stocrates-dark bg-stocrates-blue -top-1.5 -right-1.5" />
-        <div className="absolute w-3 h-3 rounded-full border-2 border-stocrates-dark bg-stocrates-blue -bottom-1.5 -left-1.5" />
-        <div className="absolute w-3 h-3 rounded-full border-2 border-stocrates-dark bg-stocrates-blue -bottom-1.5 -right-1.5" />
-        {/* Mid-point circles */}
-        <div className="absolute w-2.5 h-2.5 rounded-full border-2 border-stocrates-dark bg-stocrates-cream -top-1 left-1/2 -translate-x-1/2" />
-        <div className="absolute w-2.5 h-2.5 rounded-full border-2 border-stocrates-dark bg-stocrates-cream -bottom-1 left-1/2 -translate-x-1/2" />
-        <div className="absolute w-2.5 h-2.5 rounded-full border-2 border-stocrates-dark bg-stocrates-cream -left-1 top-1/2 -translate-y-1/2" />
-        <div className="absolute w-2.5 h-2.5 rounded-full border-2 border-stocrates-dark bg-stocrates-cream -right-1 top-1/2 -translate-y-1/2" />
-
+      <div className="bg-stocrates-blue/30 rounded-lg p-5">
         <div className="flex items-start gap-3">
           <TrendingUp className="h-6 w-6 text-stocrates-dark-blue mt-0.5" />
           <div className="text-sm">
