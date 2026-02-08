@@ -3,15 +3,13 @@
 import React, { useState, useEffect } from 'react'
 import { useGame } from '@/lib/game/game-context'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { generatePricePrediction, type PricePrediction } from '@/lib/stocks/price-predictor'
-import { 
-  Sparkles, 
-  TrendingUp, 
-  TrendingDown, 
-  Loader2, 
-  AlertTriangle, 
-  Search,
+import { type PricePrediction } from '@/lib/stocks/price-predictor'
+import {
+  Sparkles,
+  TrendingUp,
+  TrendingDown,
+  Loader2,
+  AlertTriangle,
   Calendar,
   Target,
   Brain,
@@ -21,10 +19,11 @@ import { format, differenceInDays } from 'date-fns'
 
 export function FuturePredictionView() {
   const { gameState } = useGame()
-  const [symbol, setSymbol] = useState('')
-  const [currentPrice, setCurrentPrice] = useState('')
-  const [prediction, setPrediction] = useState<PricePrediction | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
+  const { investments } = gameState.portfolio
+  const [predictions, setPredictions] = useState<Map<string, PricePrediction>>(new Map())
+  const [currentPrices, setCurrentPrices] = useState<Map<string, number>>(new Map())
+  const [isLoadingPrices, setIsLoadingPrices] = useState(false)
+  const [isLoadingPredictions, setIsLoadingPredictions] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const futureDate = gameState.selectedDate
@@ -38,42 +37,87 @@ export function FuturePredictionView() {
     return '1month'
   }
 
-  const handleGeneratePrediction = async () => {
-    if (!symbol.trim() || !currentPrice) {
-      setError('Please enter both stock symbol and current price')
-      return
+  const fetchCurrentPrice = async (symbol: string, fallbackPrice: number) => {
+    try {
+      const todayStr = new Date().toISOString().split('T')[0]
+      const response = await fetch(`/api/historical-price?symbol=${symbol}&date=${todayStr}`)
+      if (!response.ok) {
+        return fallbackPrice
+      }
+      const data = await response.json()
+      return typeof data.price === 'number' ? data.price : fallbackPrice
+    } catch (err) {
+      return fallbackPrice
     }
+  }
 
-    const price = parseFloat(currentPrice)
-    if (isNaN(price) || price <= 0) {
-      setError('Please enter a valid price')
-      return
+  const loadCurrentPrices = async () => {
+    if (investments.length === 0) return
+    setIsLoadingPrices(true)
+    setError(null)
+    try {
+      const priceMap = new Map<string, number>()
+      for (const investment of investments) {
+        const fallbackPrice = investment.currentPrice || investment.purchasePrice
+        const price = await fetchCurrentPrice(investment.symbol, fallbackPrice)
+        priceMap.set(investment.id, price)
+      }
+      setCurrentPrices(priceMap)
+    } catch (err) {
+      setError('Failed to load current prices. Please try again.')
+    } finally {
+      setIsLoadingPrices(false)
     }
+  }
 
-    setIsLoading(true)
+  const handleGeneratePredictions = async () => {
+    if (investments.length === 0) return
+
+    setIsLoadingPredictions(true)
     setError(null)
 
     try {
+      if (currentPrices.size === 0) {
+        await loadCurrentPrices()
+      }
+
       const timeframe = getTimeframe()
-      const predictionResult = await generatePricePrediction(
-        symbol.toUpperCase(),
-        price,
-        timeframe
-      )
-      setPrediction(predictionResult)
+      const newPredictions = new Map<string, PricePrediction>()
+
+      for (const investment of investments) {
+        const price = currentPrices.get(investment.id) || investment.currentPrice || investment.purchasePrice
+        const response = await fetch('/api/price-prediction', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            symbol: investment.symbol,
+            currentPrice: price,
+            timeframe
+          })
+        })
+
+        if (!response.ok) {
+          throw new Error('Prediction request failed')
+        }
+
+        const prediction = await response.json()
+        newPredictions.set(investment.id, prediction)
+      }
+
+      setPredictions(newPredictions)
     } catch (err) {
-      setError('Failed to generate prediction. Please try again.')
+      setError('Failed to generate predictions. Please try again.')
       console.error('Prediction error:', err)
     } finally {
-      setIsLoading(false)
+      setIsLoadingPredictions(false)
     }
   }
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      handleGeneratePrediction()
+  useEffect(() => {
+    if (investments.length > 0) {
+      loadCurrentPrices()
     }
-  }
+  }, [investments])
 
   return (
     <div className="space-y-4">
@@ -114,168 +158,198 @@ export function FuturePredictionView() {
         </p>
       </div>
 
-      {/* Input Form */}
+      {/* Portfolio Summary */}
       <div className="space-y-3 p-4 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg">
-        <div>
-          <label className="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1 block">
-            Stock Symbol
-          </label>
-          <Input
-            type="text"
-            placeholder="e.g., AAPL, NVDA, TSLA"
-            value={symbol}
-            onChange={(e) => setSymbol(e.target.value.toUpperCase())}
-            onKeyPress={handleKeyPress}
-            className="uppercase"
-          />
-        </div>
+        {investments.length === 0 ? (
+          <div className="text-center text-sm text-gray-600 dark:text-gray-300">
+            Add investments in the Invest tab to generate future predictions.
+          </div>
+        ) : (
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">
+                Portfolio Symbols
+              </p>
+              <span className="text-xs text-gray-500">
+                {investments.length} holdings
+              </span>
+            </div>
 
-        <div>
-          <label className="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1 block">
-            Current Price ($)
-          </label>
-          <Input
-            type="number"
-            placeholder="e.g., 150.50"
-            value={currentPrice}
-            onChange={(e) => setCurrentPrice(e.target.value)}
-            onKeyPress={handleKeyPress}
-            step="0.01"
-            min="0"
-          />
-        </div>
+            <div className="flex flex-wrap gap-2">
+              {investments.map((investment) => (
+                <span
+                  key={investment.id}
+                  className="text-xs font-semibold bg-stocrates-blue/20 text-stocrates-dark border border-stocrates-dark/30 px-2 py-1 rounded-full"
+                >
+                  {investment.symbol}
+                </span>
+              ))}
+            </div>
 
-        {error && (
-          <div className="text-xs text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30 p-2 rounded">
-            {error}
+            {isLoadingPrices ? (
+              <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-300">
+                <Loader2 className="h-4 w-4 animate-spin" />
+                Loading current prices...
+              </div>
+            ) : (
+              <div className="text-xs text-gray-600 dark:text-gray-300">
+                Current prices loaded for prediction inputs.
+              </div>
+            )}
+
+            {error && (
+              <div className="text-xs text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30 p-2 rounded">
+                {error}
+              </div>
+            )}
+
+            <div className="flex gap-2">
+              <Button
+                onClick={loadCurrentPrices}
+                disabled={isLoadingPrices || isLoadingPredictions}
+                className="flex-1 bg-stocrates-dark hover:bg-stocrates-dark-blue text-stocrates-cream"
+              >
+                {isLoadingPrices ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Refreshing Prices...
+                  </>
+                ) : (
+                  <>Refresh Prices</>
+                )}
+              </Button>
+              <Button
+                onClick={handleGeneratePredictions}
+                disabled={isLoadingPredictions || isLoadingPrices}
+                className="flex-1 bg-purple-600 hover:bg-purple-700 text-white"
+              >
+                {isLoadingPredictions ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Generating...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="mr-2 h-4 w-4" />
+                    Generate Predictions
+                  </>
+                )}
+              </Button>
+            </div>
           </div>
         )}
-
-        <Button
-          onClick={handleGeneratePrediction}
-          disabled={isLoading}
-          className="w-full bg-purple-600 hover:bg-purple-700 text-white"
-        >
-          {isLoading ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Generating Prediction...
-            </>
-          ) : (
-            <>
-              <Sparkles className="mr-2 h-4 w-4" />
-              Generate Prediction
-            </>
-          )}
-        </Button>
       </div>
 
       {/* Prediction Result */}
-      {prediction && (
-        <div className="space-y-3 animate-in fade-in slide-in-from-bottom-4 duration-500">
-          {/* Main Prediction */}
-          <div className={`border-2 rounded-lg p-4 ${
-            prediction.predictedChange >= 0
-              ? 'bg-green-50 dark:bg-green-950/30 border-green-500'
-              : 'bg-red-50 dark:bg-red-950/30 border-red-500'
-          }`}>
-            <div className="flex items-center gap-2 mb-3">
-              {prediction.predictedChange >= 0 ? (
-                <TrendingUp className="h-6 w-6 text-green-600 dark:text-green-400" />
-              ) : (
-                <TrendingDown className="h-6 w-6 text-red-600 dark:text-red-400" />
-              )}
-              <h4 className="font-bold text-lg">
-                {prediction.symbol} Prediction
-              </h4>
-            </div>
+      {predictions.size > 0 && (
+        <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          {investments.map((investment) => {
+            const prediction = predictions.get(investment.id)
+            if (!prediction) return null
 
-            <div className="grid grid-cols-2 gap-3 mb-3">
-              <div>
-                <p className="text-xs text-gray-600 dark:text-gray-400">Current Price</p>
-                <p className="text-2xl font-bold">${prediction.currentPrice.toFixed(2)}</p>
-              </div>
-              <div>
-                <p className="text-xs text-gray-600 dark:text-gray-400">Predicted Price</p>
-                <p className={`text-2xl font-bold ${
-                  prediction.predictedChange >= 0 ? 'text-green-600' : 'text-red-600'
+            return (
+              <div key={investment.id} className="space-y-3">
+                <div className={`border-2 rounded-lg p-4 ${
+                  prediction.predictedChange >= 0
+                    ? 'bg-green-50 dark:bg-green-950/30 border-green-500'
+                    : 'bg-red-50 dark:bg-red-950/30 border-red-500'
                 }`}>
-                  ${prediction.predictedPrice.toFixed(2)}
-                </p>
+                  <div className="flex items-center gap-2 mb-3">
+                    {prediction.predictedChange >= 0 ? (
+                      <TrendingUp className="h-6 w-6 text-green-600 dark:text-green-400" />
+                    ) : (
+                      <TrendingDown className="h-6 w-6 text-red-600 dark:text-red-400" />
+                    )}
+                    <h4 className="font-bold text-lg">
+                      {prediction.symbol} Prediction
+                    </h4>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3 mb-3">
+                    <div>
+                      <p className="text-xs text-gray-600 dark:text-gray-400">Current Price</p>
+                      <p className="text-2xl font-bold">${prediction.currentPrice.toFixed(2)}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-600 dark:text-gray-400">Predicted Price</p>
+                      <p className={`text-2xl font-bold ${
+                        prediction.predictedChange >= 0 ? 'text-green-600' : 'text-red-600'
+                      }`}>
+                        ${prediction.predictedPrice.toFixed(2)}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className={`p-3 rounded-lg ${
+                    prediction.predictedChange >= 0
+                      ? 'bg-green-100 dark:bg-green-900/30'
+                      : 'bg-red-100 dark:bg-red-900/30'
+                  }`}>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-semibold">Expected Change</span>
+                      <span className={`text-xl font-bold ${
+                        prediction.predictedChange >= 0 ? 'text-green-700' : 'text-red-700'
+                      }`}>
+                        {prediction.predictedChange >= 0 ? '+' : ''}
+                        {prediction.predictedChange.toFixed(2)}%
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="border rounded-lg p-4 bg-white dark:bg-gray-900">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Target className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                    <span className="text-sm font-semibold">Confidence Level</span>
+                  </div>
+                  <div className="relative h-6 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                    <div
+                      className={`h-full transition-all duration-500 ${
+                        prediction.confidence >= 70
+                          ? 'bg-green-500'
+                          : prediction.confidence >= 40
+                          ? 'bg-yellow-500'
+                          : 'bg-red-500'
+                      }`}
+                      style={{ width: `${prediction.confidence}%` }}
+                    />
+                  </div>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 text-right">
+                    {prediction.confidence}% confidence
+                  </p>
+                </div>
+
+                <div className="border rounded-lg p-4 bg-white dark:bg-gray-900">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Brain className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+                    <span className="text-sm font-semibold">AI Analysis</span>
+                  </div>
+                  <p className="text-sm text-gray-700 dark:text-gray-300">
+                    {prediction.reasoning}
+                  </p>
+                </div>
+
+                <div className="border rounded-lg p-4 bg-white dark:bg-gray-900">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Newspaper className="h-4 w-4 text-orange-600 dark:text-orange-400" />
+                    <span className="text-sm font-semibold">Key Factors</span>
+                  </div>
+                  <ul className="space-y-2">
+                    {prediction.newsFactors.map((factor, index) => (
+                      <li key={index} className="flex items-start gap-2 text-sm">
+                        <span className="text-orange-600 dark:text-orange-400 mt-0.5">•</span>
+                        <span className="text-gray-700 dark:text-gray-300">{factor}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
-            </div>
+            )
+          })}
 
-            <div className={`p-3 rounded-lg ${
-              prediction.predictedChange >= 0
-                ? 'bg-green-100 dark:bg-green-900/30'
-                : 'bg-red-100 dark:bg-red-900/30'
-            }`}>
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-semibold">Expected Change</span>
-                <span className={`text-xl font-bold ${
-                  prediction.predictedChange >= 0 ? 'text-green-700' : 'text-red-700'
-                }`}>
-                  {prediction.predictedChange >= 0 ? '+' : ''}
-                  {prediction.predictedChange.toFixed(2)}%
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Confidence Level */}
-          <div className="border rounded-lg p-4 bg-white dark:bg-gray-900">
-            <div className="flex items-center gap-2 mb-2">
-              <Target className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-              <span className="text-sm font-semibold">Confidence Level</span>
-            </div>
-            <div className="relative h-6 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-              <div
-                className={`h-full transition-all duration-500 ${
-                  prediction.confidence >= 70
-                    ? 'bg-green-500'
-                    : prediction.confidence >= 40
-                    ? 'bg-yellow-500'
-                    : 'bg-red-500'
-                }`}
-                style={{ width: `${prediction.confidence}%` }}
-              />
-            </div>
-            <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 text-right">
-              {prediction.confidence}% confidence
-            </p>
-          </div>
-
-          {/* AI Reasoning */}
-          <div className="border rounded-lg p-4 bg-white dark:bg-gray-900">
-            <div className="flex items-center gap-2 mb-2">
-              <Brain className="h-4 w-4 text-purple-600 dark:text-purple-400" />
-              <span className="text-sm font-semibold">AI Analysis</span>
-            </div>
-            <p className="text-sm text-gray-700 dark:text-gray-300">
-              {prediction.reasoning}
-            </p>
-          </div>
-
-          {/* Key Factors */}
-          <div className="border rounded-lg p-4 bg-white dark:bg-gray-900">
-            <div className="flex items-center gap-2 mb-3">
-              <Newspaper className="h-4 w-4 text-orange-600 dark:text-orange-400" />
-              <span className="text-sm font-semibold">Key Factors</span>
-            </div>
-            <ul className="space-y-2">
-              {prediction.newsFactors.map((factor, index) => (
-                <li key={index} className="flex items-start gap-2 text-sm">
-                  <span className="text-orange-600 dark:text-orange-400 mt-0.5">•</span>
-                  <span className="text-gray-700 dark:text-gray-300">{factor}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Educational Note */}
           <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
             <p className="text-xs text-blue-800 dark:text-blue-200">
-              <strong>💡 Learning Tip:</strong> This prediction combines historical pattern analysis with recent news sentiment. Real investors use similar methods but also consider many other factors like company fundamentals, market conditions, and economic indicators.
+              <strong>💡 Learning Tip:</strong> Predictions combine historical pattern analysis with recent news sentiment. Real investors use similar methods but also consider company fundamentals, market conditions, and economic indicators.
             </p>
           </div>
         </div>
