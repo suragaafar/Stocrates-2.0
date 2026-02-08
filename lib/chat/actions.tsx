@@ -856,7 +856,7 @@ Redirect to education: "I can't tell you what to invest in, but I can teach you 
         <div className="border p-4">
           <div className="text-red-700 font-medium">Error: {err.message}</div>
           <a
-            href="https://github.com/Ahthe/TradeWise"
+            href="https://github.com/makhskham/Stocrates-2.0"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center text-sm text-red-800 hover:text-red-900"
