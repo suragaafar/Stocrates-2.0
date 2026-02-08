@@ -10,6 +10,7 @@ import { Toaster } from '@/components/ui/sonner'
 import { Analytics } from "@vercel/analytics/react"
 import { GameProvider } from '@/lib/game/game-context'
 import { GameSidebar } from '@/components/game/game-sidebar'
+import { LogoBadge } from '@/components/logo-badge'
 
 export const metadata = {
   metadataBase: process.env.VERCEL_URL
@@ -22,9 +23,9 @@ export const metadata = {
   description:
     'Educational AI-powered financial literacy platform combining stock market analysis with the Socratic Method. Learn through historical patterns, not predictions.',
   icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon-16x16.png',
-    apple: '/apple-touch-icon.png'
+    icon: '/logo.jpg',
+    shortcut: '/logo.jpg',
+    apple: '/logo.jpg'
   }
 }
 
@@ -62,6 +63,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
               <main className="flex flex-col flex-1 bg-stocrates-cream">{children}</main>
             </div>
             <GameSidebar />
+            <LogoBadge />
             {/* <ThemeToggle /> */}
             <Analytics />
           </GameProvider>

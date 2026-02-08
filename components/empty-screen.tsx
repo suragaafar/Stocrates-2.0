@@ -1,10 +1,10 @@
 import { UseChatHelpers } from 'ai/react'
-import { StocratesCard } from '@/components/ui/stocrates-card'
+import { DecorativeFrame } from '@/components/ui/stocrates-card'
 
 export function EmptyScreen() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <StocratesCard variant="decorative" background="cream" className="shadow-lg">
+      <DecorativeFrame cornerColor="blue" className="bg-stocrates-cream p-8 shadow-lg">
         <div className="flex flex-col gap-6">
           <div>
             <h1 className="font-title text-4xl font-bold text-stocrates-dark mb-2">
@@ -59,7 +59,7 @@ export function EmptyScreen() {
             </p>
           </div>
         </div>
-      </StocratesCard>
+      </DecorativeFrame>
     </div>
   )
 }
