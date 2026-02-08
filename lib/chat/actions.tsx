@@ -8,7 +8,6 @@ import {
   createStreamableValue
 } from 'ai/rsc'
 import { createGroq } from '@ai-sdk/groq'
-// import { createOpenAI } from '@ai-sdk/openai'  // Commented out - quota exceeded
 
 import { BotCard, BotMessage } from '@/components/stocks/message'
 import { Caption } from '@/components/stocks/caption'
@@ -105,10 +104,6 @@ async function generateCaption(
     apiKey: GROQ_API_KEY_ENV
   })
 
-  // OPENAI VERSION (if you re-enable captions)
-  const openai = createOpenAI({
-    apiKey: OPENAI_API_KEY
-  })
 
   aiState.update({
     ...aiState.get(),
