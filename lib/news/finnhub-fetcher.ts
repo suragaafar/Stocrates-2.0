@@ -23,10 +23,20 @@ export async function fetchNewsFromFinnhub(
   }
 
   try {
+    // Limit to maximum 60 days (2 months)
+    const maxDaysBack = Math.min(daysBack, 60)
+
     // Calculate date range
     const toDate = new Date()
     const fromDate = new Date()
-    fromDate.setDate(fromDate.getDate() - daysBack)
+    fromDate.setDate(fromDate.getDate() - maxDaysBack)
+
+    // Ensure we don't go back more than 2 months
+    const twoMonthsAgo = new Date()
+    twoMonthsAgo.setMonth(twoMonthsAgo.getMonth() - 2)
+    if (fromDate < twoMonthsAgo) {
+      fromDate.setTime(twoMonthsAgo.getTime())
+    }
 
     // Format dates as YYYY-MM-DD
     const from = fromDate.toISOString().split('T')[0]
@@ -45,16 +55,23 @@ export async function fetchNewsFromFinnhub(
 
     const data = await response.json()
 
-    // Convert to our NewsArticle format
-    const articles: NewsArticle[] = data.map((article: any) => ({
-      title: article.headline,
-      source: article.source || 'Finnhub',
-      url: article.url,
-      publishedAt: new Date(article.datetime * 1000).toISOString(),
-      snippet: article.summary || '',
-      sentiment: undefined // Will be analyzed later
-    }))
+    // Filter and convert to our NewsArticle format
+    const articles: NewsArticle[] = data
+      .filter((article: any) => {
+        // Filter out articles older than 2 months
+        const publishedDate = new Date(article.datetime * 1000)
+        return publishedDate >= twoMonthsAgo
+      })
+      .map((article: any) => ({
+        title: article.headline,
+        source: article.source || 'Finnhub',
+        url: article.url,
+        publishedAt: new Date(article.datetime * 1000).toISOString(),
+        snippet: article.summary || '',
+        sentiment: undefined // Will be analyzed later
+      }))
 
+    console.log(`✅ Fetched ${articles.length} articles from Finnhub (filtered to last 2 months)`)
     return articles
   } catch (error) {
     if (error instanceof Error && error.message === 'RATE_LIMIT_EXCEEDED') {

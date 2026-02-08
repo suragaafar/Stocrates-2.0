@@ -14,7 +14,12 @@
     "test:reddit": "tsx scripts/test-reddit-scraper.ts",
     "test:news": "tsx scripts/test-newsapi.ts",
     "test:integration": "tsx scripts/test-full-integration.ts",
-    "test:fallback": "tsx scripts/test-api-fallback.ts"
+    "test:fallback": "tsx scripts/test-api-fallback.ts",
+    "scrape:reddit": "tsx scripts/scrape-reddit-multi.ts",
+    "scrape:reddit:comments": "python scripts/scrape-reddit-with-comments.py",
+    "analyze:reddit": "tsx scripts/analyze-reddit-batches.ts",
+    "analyze:reddit:limited": "tsx scripts/analyze-reddit-limited.ts",
+    "view:analysis": "tsx scripts/view-reddit-analysis.ts"
   },
   "dependencies": {
     "@ai-sdk/groq": "^1.2.9",

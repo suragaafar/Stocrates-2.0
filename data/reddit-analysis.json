@@ -1,0 +1,16 @@
+{
+  "totalPosts": 40,
+  "totalBatches": 2,
+  "subreddits": [
+    "wallstreetbets",
+    "investing"
+  ],
+  "topStocks": [],
+  "themes": [],
+  "overallSentiment": "neutral",
+  "confidence": 50,
+  "summary": "Analyzed 40 posts from r/wallstreetbets and r/investing. Top mentioned stocks: . Overall market sentiment is neutral with 0% confidence. Key themes: .",
+  "analyzedAt": "2026-02-08T05:04:32.341Z",
+  "fearGreedIndex": 50,
+  "marketSentimentReasoning": "Unable to analyze"
+}

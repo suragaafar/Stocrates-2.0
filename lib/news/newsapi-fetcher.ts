@@ -25,10 +25,20 @@ export async function fetchNewsFromNewsAPI(
   }
 
   try {
+    // Limit to maximum 60 days (2 months)
+    const maxDaysBack = Math.min(daysBack, 60)
+
     // Calculate date range
     const toDate = new Date()
     const fromDate = new Date()
-    fromDate.setDate(fromDate.getDate() - daysBack)
+    fromDate.setDate(fromDate.getDate() - maxDaysBack)
+
+    // Ensure we don't go back more than 2 months
+    const twoMonthsAgo = new Date()
+    twoMonthsAgo.setMonth(twoMonthsAgo.getMonth() - 2)
+    if (fromDate < twoMonthsAgo) {
+      fromDate.setTime(twoMonthsAgo.getTime())
+    }
 
     // Build search query - use company name if available, otherwise symbol
     const searchQuery = companyName 
@@ -69,16 +79,23 @@ export async function fetchNewsFromNewsAPI(
       throw new Error(`NewsAPI error: ${data.message || 'Unknown error'}`)
     }
 
-    // Convert to our NewsArticle format
-    const articles: NewsArticle[] = data.articles.map((article: any) => ({
-      title: article.title,
-      source: mapSourceName(article.source.name),
-      url: article.url,
-      publishedAt: article.publishedAt,
-      snippet: article.description || article.content?.substring(0, 200) || '',
-      sentiment: undefined // Will be analyzed later
-    }))
+    // Convert to our NewsArticle format and filter by date
+    const articles: NewsArticle[] = data.articles
+      .filter((article: any) => {
+        // Filter out articles older than 2 months
+        const publishedDate = new Date(article.publishedAt)
+        return publishedDate >= twoMonthsAgo
+      })
+      .map((article: any) => ({
+        title: article.title,
+        source: mapSourceName(article.source.name),
+        url: article.url,
+        publishedAt: article.publishedAt,
+        snippet: article.description || article.content?.substring(0, 200) || '',
+        sentiment: undefined // Will be analyzed later
+      }))
 
+    console.log(`✅ Fetched ${articles.length} articles from NewsAPI (filtered to last 2 months)`)
     return articles
   } catch (error) {
     console.error('Error fetching from NewsAPI:', error)
