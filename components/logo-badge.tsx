@@ -6,16 +6,17 @@ import Link from 'next/link'
 
 export function LogoBadge() {
   return (
-    <Link 
+    <Link
       href="/new"
       className="fixed bottom-4 left-4 z-50 group"
     >
-      <div className="relative w-12 h-12 rounded-full overflow-hidden border-3 border-stocrates-dark shadow-lg hover:scale-110 transition-transform bg-white">
+      <div className="w-12 h-12 rounded-full overflow-hidden border-3 border-stocrates-dark shadow-lg hover:scale-110 transition-transform bg-white flex items-center justify-center">
         <Image
           src="/logo.jpg"
           alt="Stocrates Logo"
-          fill
-          className="object-cover"
+          width={48}
+          height={48}
+          className="object-cover w-full h-full"
           priority
         />
       </div>
