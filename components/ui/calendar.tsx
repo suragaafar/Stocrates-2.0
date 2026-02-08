@@ -22,8 +22,9 @@ function Calendar({
       classNames={{
         months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
         month: "space-y-4",
-        caption: "flex justify-center pt-1 relative items-center mb-4",
-        caption_label: "text-base font-semibold text-gray-800 dark:text-gray-200 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md px-4 py-2",
+        caption: "relative flex items-center justify-center mb-4 w-full",
+caption_label: "mx-auto text-base font-semibold text-gray-800 dark:text-gray-200",
+
         nav: "space-x-1 flex items-center",
         nav_button: cn(
           buttonVariants({ variant: "ghost" }),
@@ -32,7 +33,8 @@ function Calendar({
         nav_button_previous: "absolute left-1",
         nav_button_next: "absolute right-1",
         table: "w-full border-collapse space-y-1",
-        head_row: "flex w-full",
+        head_row: "grid grid-cols-7 w-full text-center",
+
         head_cell:
           "text-indigo-600 dark:text-indigo-400 font-semibold text-sm flex items-center justify-center w-9",
         row: "flex w-full mt-2",

@@ -8,7 +8,7 @@ export function EmptyScreen() {
         <div className="flex flex-col gap-6">
           <div>
             <h1 className="font-title text-4xl font-bold text-stocrates-dark mb-2">
-              Welcome to Stocrates! 🎓📊
+              Welcome to Stocrates!
             </h1>
             <p className="font-title text-xl text-stocrates-dark-blue">
               Learn Markets Through Historical Patterns
