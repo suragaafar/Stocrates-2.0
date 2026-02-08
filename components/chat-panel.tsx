@@ -24,7 +24,7 @@ export function ChatPanel({
   const [aiState] = useAIState()
 
   return (
-    <div className="fixed inset-x-0 bg-white/10 bottom-0 w-full duration-300 ease-in-out peer-[[data-state=open]]:group-[]:lg:pl-[250px] peer-[[data-state=open]]:group-[]:xl:pl-[300px] dark:from-10%">
+    <div className="fixed inset-x-0 bg-stocrates-cream/95 backdrop-blur-sm bottom-0 w-full duration-300 ease-in-out peer-[[data-state=open]]:group-[]:lg:pl-[250px] peer-[[data-state=open]]:group-[]:xl:pl-[300px] border-t-3 border-stocrates-dark/10">
       <ButtonScrollToBottom
         isAtBottom={isAtBottom}
         scrollToBottom={scrollToBottom}

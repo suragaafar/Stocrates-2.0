@@ -6,9 +6,9 @@ import remarkMath from 'remark-math'
 
 export function Caption({ children }: { children: string }) {
   return (
-    <div className="text-sm leading-relaxed bg-muted/30 p-4 rounded-lg border">
+    <div className="text-sm leading-relaxed bg-stocrates-gray/50 p-4 rounded-lg border-2 border-stocrates-dark/20">
       <MemoizedReactMarkdown
-        className="prose prose-sm break-words dark:prose-invert prose-p:leading-relaxed prose-p:my-2"
+        className="prose prose-sm break-words prose-p:leading-relaxed prose-p:my-2 font-body text-stocrates-dark prose-headings:font-title prose-headings:text-stocrates-dark prose-strong:text-stocrates-dark"
         remarkPlugins={[remarkGfm, remarkMath]}
         components={{
           p({ children }) {

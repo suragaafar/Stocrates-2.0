@@ -58,24 +58,23 @@ export function PromptForm({
         setMessages(currentMessages => [...currentMessages, responseMessage])
       }}
     >
-      <div className="relative flex max-h-60 w-full grow flex-col overflow-hidden bg-zinc-100 px-12 sm:rounded-full sm:px-12">
-        <Button
-          variant="outline"
-          size="icon"
-          className="absolute left-4 top-[14px] size-8 rounded-full bg-background p-0 sm:left-4"
+      <div className="relative flex max-h-60 w-full grow flex-col overflow-hidden bg-white border-3 border-stocrates-dark px-12 sm:rounded-full sm:px-12 shadow-md">
+        <button
+          type="button"
+          className="absolute left-4 top-[14px] size-8 rounded-full bg-stocrates-dark text-stocrates-cream hover:bg-stocrates-dark-blue transition-colors flex items-center justify-center p-0 sm:left-4"
           onClick={() => {
             router.push('/new')
           }}
         >
           <IconPlus />
           <span className="sr-only">New Chat</span>
-        </Button>
+        </button>
         <Textarea
           ref={inputRef}
           tabIndex={0}
           onKeyDown={onKeyDown}
-          placeholder="Send a message."
-          className="min-h-[60px] w-full bg-transparent placeholder:text-zinc-900 resize-none px-4 py-[1.3rem] focus-within:outline-none sm:text-sm"
+          placeholder="Ask me about stocks..."
+          className="font-body min-h-[60px] w-full bg-transparent placeholder:text-stocrates-dark/50 text-stocrates-dark resize-none px-4 py-[1.3rem] focus-within:outline-none sm:text-sm"
           autoFocus
           spellCheck={false}
           autoComplete="off"
@@ -88,17 +87,18 @@ export function PromptForm({
         <div className="absolute right-4 top-[13px] sm:right-4">
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button
+              <button
                 type="submit"
-                size="icon"
                 disabled={input === ''}
-                className="bg-transparent shadow-none text-zinc-950 rounded-full hover:bg-zinc-200"
+                className="size-8 bg-stocrates-dark text-stocrates-cream rounded-full hover:bg-stocrates-dark-blue disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center"
               >
                 <IconArrowElbow />
                 <span className="sr-only">Send message</span>
-              </Button>
+              </button>
             </TooltipTrigger>
-            <TooltipContent>Send message</TooltipContent>
+            <TooltipContent className="bg-stocrates-dark text-stocrates-cream border-stocrates-dark">
+              Send message
+            </TooltipContent>
           </Tooltip>
         </div>
       </div>

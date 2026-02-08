@@ -229,3 +229,21 @@
   display: inline-block;
   filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.1));
 }
+
+/* Animated gradient for Investment Game button */
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease infinite;
+}

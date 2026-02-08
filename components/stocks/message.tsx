@@ -15,11 +15,11 @@ import { useStreamableText } from '@/lib/hooks/use-streamable-text'
 export function UserMessage({ children }: { children: React.ReactNode }) {
   return (
     <div className="group relative flex items-start md:-ml-12">
-      <div className="flex size-[25px] shrink-0 select-none items-center justify-center rounded-md border bg-background shadow-sm">
-        <IconUser />
+      <div className="flex size-[25px] shrink-0 select-none items-center justify-center rounded-md border-2 border-stocrates-dark bg-stocrates-blue shadow-sm">
+        <IconUser className="text-stocrates-dark" />
       </div>
       <div className="ml-4 flex-1 space-y-2 overflow-hidden pl-2">
-        {children}
+        <div className="font-body text-stocrates-dark">{children}</div>
       </div>
     </div>
   )
@@ -36,12 +36,12 @@ export function BotMessage({
 
   return (
     <div className={cn('group relative flex items-start md:-ml-12', className)}>
-      <div className="flex size-[24px] shrink-0 select-none items-center justify-center rounded-md border bg-[#f55036] text-primary-foreground shadow-sm">
-        <IconGroq />
+      <div className="flex size-[24px] shrink-0 select-none items-center justify-center rounded-md border-2 border-stocrates-dark bg-stocrates-red shadow-sm">
+        <IconGroq className="text-white" />
       </div>
       <div className="ml-4 flex-1 space-y-2 overflow-hidden px-1">
         <MemoizedReactMarkdown
-          className="prose break-words dark:prose-invert prose-p:leading-relaxed prose-pre:p-0"
+          className="prose break-words prose-p:leading-relaxed prose-pre:p-0 font-body text-stocrates-dark prose-headings:font-title prose-headings:text-stocrates-dark prose-strong:text-stocrates-dark"
           remarkPlugins={[remarkGfm, remarkMath]}
           components={{
             p({ children }) {
@@ -97,11 +97,11 @@ export function BotCard({
     <div className="group relative flex items-start md:-ml-12">
       <div
         className={cn(
-          'flex size-[24px] shrink-0 select-none items-center justify-center rounded-md border bg-[#f55036] text-primary-foreground shadow-sm',
+          'flex size-[24px] shrink-0 select-none items-center justify-center rounded-md border-2 border-stocrates-dark bg-stocrates-red shadow-sm',
           !showAvatar && 'invisible'
         )}
       >
-        <IconGroq />
+        <IconGroq className="text-white" />
       </div>
       <div className="ml-4 flex-1 pl-2">{children}</div>
     </div>
@@ -112,7 +112,7 @@ export function SystemMessage({ children }: { children: React.ReactNode }) {
   return (
     <div
       className={
-        'mt-2 flex items-center justify-center gap-2 text-xs text-gray-500'
+        'mt-2 flex items-center justify-center gap-2 text-xs text-stocrates-dark-blue font-body'
       }
     >
       <div className={'max-w-[600px] flex-initial p-2'}>{children}</div>
@@ -123,8 +123,8 @@ export function SystemMessage({ children }: { children: React.ReactNode }) {
 export function SpinnerMessage() {
   return (
     <div className="group relative flex items-start md:-ml-12">
-      <div className="flex size-[24px] shrink-0 select-none items-center justify-center rounded-md border bg-[#f55036] text-primary-foreground shadow-sm">
-        <IconGroq />
+      <div className="flex size-[24px] shrink-0 select-none items-center justify-center rounded-md border-2 border-stocrates-dark bg-stocrates-red shadow-sm">
+        <IconGroq className="text-white" />
       </div>
       <div className="ml-4 h-[24px] flex flex-row items-center flex-1 space-y-2 overflow-hidden px-1">
         {spinner}

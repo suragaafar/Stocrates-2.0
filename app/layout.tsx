@@ -57,9 +57,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
           disableTransitionOnChange
         >
           <GameProvider>
-            <div className="flex flex-col min-h-screen">
+            <div className="flex flex-col min-h-screen bg-stocrates-cream">
               <Header />
-              <main className="flex flex-col flex-1 bg-muted/50">{children}</main>
+              <main className="flex flex-col flex-1 bg-stocrates-cream">{children}</main>
             </div>
             <GameSidebar />
             {/* <ThemeToggle /> */}
